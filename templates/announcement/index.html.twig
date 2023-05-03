@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les annonces!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="container">
+    <h1>Les annonces! ✅</h1>
+
+    <div class="count">
+        <h4>Il y'a 
+            {{ announcements.getTotalItemCount }}
+            annonces au total:
+        </h4>
+    </div>
+
+    <table class="table table-hover">
+    <thead>
+        <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Date</th>
+        <th scope="col">City</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    {% for announcement in announcements %}
+    <tr class="table-primary">
+      <th scope="row">{{announcement.id}}</th>
+      <td>{{announcement.title}}</td>
+      <td>{{announcement.price}}€</td>
+      <td>{{announcement.date|date('d/m/Y') }}</td>
+      <td>{{announcement.city}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        {{knp_pagination_render(announcements)}}
+    </div>
+    
+</div>
+{% endblock %}
