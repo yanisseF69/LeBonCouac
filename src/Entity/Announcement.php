@@ -3,13 +3,12 @@
 namespace App\Entity;
 
 use App\Entity\User;
-use App\Entity\Photo;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AnnouncementRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: AnnouncementRepository::class)]
 class Announcement
@@ -29,22 +28,19 @@ class Announcement
     private ?string $description = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    private ?\DateTimeInterface $createdAt = null;
 
     #[ORM\Column(length: 20)]
     private ?string $city = null;
 
-    #[ORM\ManyToOne(inversedBy: 'announcements')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $idU = null;
+    #[ORM\OneToMany(mappedBy: 'announcement', targetEntity: Image::class, orphanRemoval: true, cascade: ['persist'])]
+    private Collection $images;
 
-    #[ORM\OneToMany(mappedBy: 'idA', targetEntity: Photo::class, orphanRemoval: true)]
-    private Collection $photos;
 
     public function __construct()
     {
-        $this->photos = new ArrayCollection();
-        $this->date = new DateTimeImmutable();
+        $this->createdAt = new DateTimeImmutable();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,18 +84,6 @@ class Announcement
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): self
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
     public function getCity(): ?string
     {
         return $this->city;
@@ -112,46 +96,54 @@ class Announcement
         return $this;
     }
 
-    public function getIdU(): ?User
-    {
-        return $this->idU;
-    }
-
-    public function setIdU(?User $idU): self
-    {
-        $this->idU = $idU;
-
-        return $this;
-    }
-
     /**
-     * @return Collection<int, Photo>
+     * @return Collection<int, Image>
      */
-    public function getPhotos(): Collection
+    public function getImages(): Collection
     {
-        return $this->photos;
+        return $this->images;
     }
 
-    public function addPhoto(Photo $photo): self
+    public function addImage(Image $image): self
     {
-        if (!$this->photos->contains($photo)) {
-            $this->photos->add($photo);
-            $photo->setIdA($this);
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setAnnouncement($this);
         }
 
         return $this;
     }
 
-    public function removePhoto(Photo $photo): self
+    public function removeImage(Image $image): self
     {
-        if ($this->photos->removeElement($photo)) {
+        if ($this->images->removeElement($image)) {
             // set the owning side to null (unless already changed)
-            if ($photo->getIdA() === $this) {
-                $photo->setIdA(null);
+            if ($image->getAnnouncement() === $this) {
+                $image->setAnnouncement(null);
             }
         }
 
         return $this;
     }
 
+
+    /**
+     * Get the value of createdAt
+     */ 
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Set the value of createdAt
+     *
+     * @return  self
+     */ 
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
 }

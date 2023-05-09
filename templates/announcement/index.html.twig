@@ -9,7 +9,7 @@
 </style>
 
 <div class="container">
-    <h1>Les annonces! ✅</h1>
+    <h1>Les annonces!</h1>
 
     <div class="count">
         <h4>Il y'a 
@@ -31,13 +31,19 @@
     <tbody>
 
     {% for announcement in announcements %}
-    <tr class="table-primary">
-      <th scope="row">{{announcement.id}}</th>
-      <td>{{announcement.title}}</td>
-      <td>{{announcement.price}}€</td>
-      <td>{{announcement.date|date('d/m/Y') }}</td>
-      <td>{{announcement.city}}</td>
-    </tr>
+
+    <a href="/announcement/detail/{{announcement.id}}" style="text-decoration : none">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{announcement.title}}</h4>
+            <h6 class="card-subtitle mb-2 text-muted">{{announcement.price}} €</h6>
+            <p class="card-text">Crée le {{announcement.createdAt|date('Y/m/d') }} </br>
+            à {{announcement.city}}</p>
+            
+        </div>
+    </div>
+    </a>
+    
     {% endfor %}
     </tbody>
     </table>

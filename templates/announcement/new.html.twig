@@ -2,8 +2,16 @@
 
 {% block body %}
     <div class="container">
-        <h1>Nouvelle annonce</h1>
+        <h1 style="text-align: center">Nouvelle annonce</h1>
         
-        {{ form(form) }}
+        {{ form_start(form, {'attr': {'class': 'form-group row'}}) }}
+            {{ form_row(form.title, {'attr': {'class': 'form-control'}}) }}
+            
+            {{ form_row(form.description, {'attr': {'class': 'form-control', 'rows' : 5}}) }}
+            {{ form_row(form.price, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(form.city, {'attr': {'class': 'form-control'}}) }}
+            {{ form_row(form.image, {'attr': {'class': 'form-control', 'type' : 'file'}}) }}
+            {{ form_row(form.submit, {'attr': {'class': 'btn btn-primary'}}) }}
+        {{ form_end(form) }}
     </div>
 {% endblock %}

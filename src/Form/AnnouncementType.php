@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints\File;
 
 
@@ -30,19 +31,24 @@ class AnnouncementType extends AbstractType
             ])
             ->add('description')
             ->add('city')
-            ->add('photos', FileType::class, [
-                'label' => 'Insérez une image : ',
+            ->add('image', FileType::class, [
+                'label' => 'Image',
+                'mapped' => false,
+                'required' => false,
                 'constraints' => [
                     new File([
+                        'maxSize' => '5M',
                         'mimeTypes' => [
-                            'application/jpg',
-                            'application/png',
-                            'application/jpeg'
+                            'image/jpeg',
+                            'image/png',
                         ],
-                        'mimeTypesMessage' => 'Insérez une image valide',
+                        'mimeTypesMessage' => 'Please upload a valid JPEG or PNG image',
                     ])
-                ]
+                ],
             ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Publier l\'annonce'
+            ]);
         ;
     }
 
