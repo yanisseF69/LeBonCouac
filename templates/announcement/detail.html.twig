@@ -2,8 +2,12 @@
 
 {% block body %}
     <div class="container">
+
+    {% for image in images %}
+    <img src="{{ asset('uploads/images/' ~ image.filename) }}" alt="{{ image.filename }}" width="300" height="300">
+    {% endfor %}
         <h1>{{ announcement.title }}</h1>
-        <h2> {{ announcement.price }} </h2>
+        <h2> {{ announcement.price }} € </h2>
         <p> {{announcement.description }} </p>
     </div>
 {% endblock %}

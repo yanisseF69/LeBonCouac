@@ -8,6 +8,7 @@ use App\Entity\Announcement;
 use App\Form\AnnouncementType;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\AnnouncementRepository;
+use App\Repository\ImageRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,14 +93,23 @@ class AnnouncementController extends AbstractController
     }
 
     #[Route('/announcement/detail/{id}', name : 'detail')]
-    public function detail($id, ManagerRegistry $doctrine) : Response {
+    public function detail($id, ManagerRegistry $doctrine, ImageRepository $imageRepository) : Response {
 
         $announcement = $doctrine->getManager()
                         ->getRepository(Announcement::class)
                         ->find($id);
 
+        $images = $imageRepository->findBy(['announcement' => $announcement]);
+
+        if($images == null){
+            $images = $imageRepository->findBy(['filename' => 'vide.jpg']);
+        }
+
+        
+
 
         return $this->render('/announcement/detail.html.twig',
-                ['announcement' => $announcement]);
+                ['announcement' => $announcement,
+                'images' => $images]);
     }
 }
