@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ app.user.pseudo }} - Profil {% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Salut {{ app.user.pseudo }}! </h1>
+
+        <h2>Mes annonces</h2>
+
+        {% for announcement in app.user.announcements %}
+            <a href="announcement/detail/{{announcement.id}}" style="text-decoration : none">
+            <div class="card border-primary mb-3" style="max-width: 20rem;">
+            <div class="card-header">{{ announcement.title }}</div>
+            <div class="card-body">
+                <h4 class="card-title">{{ announcement.price }}</h4>
+                <p class="card-text">{{ announcement.description|length > 50 ?
+                announcement.description|striptags|slice(0,75) ~ "..." :
+                announcement.description }}</p>
+            </div>
+            </a>
+        {% endfor %}
+
+    </div>
+
+{% endblock %}

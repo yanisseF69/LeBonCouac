@@ -34,13 +34,15 @@ class AnnouncementController extends AbstractController
         ]);
     }
 
-    #[Route('/announcement/success', name : 'success', methods:['GET'])]
+    #[Route('/announcement/success', name : 'announcement_success')]
     public function success() : Response {
         return $this->render('announcement/success.html.twig');
     }
 
     #[Route('/announcement/new', name : 'create', methods:['GET', 'POST'])]
     public function new(Request $request, ManagerRegistry $doctrine): Response {
+
+        if(!$this->getUser()) return $this->render('/announcement/connect.html.twig');
 
         $announcement = new Announcement();
         $form = $this->createForm(AnnouncementType::class, $announcement);
@@ -49,12 +51,11 @@ class AnnouncementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
         
             
-
+            $announcement->setUser($this->getUser());
             $entityManager = $doctrine->getManager();
             $entityManager->persist($announcement);
 
             $file = $form->get('image')->getData();
-            // dd($request, $request->files, $form, $file);
             
             if($file->isFile()){
                 $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -84,7 +85,7 @@ class AnnouncementController extends AbstractController
             }
 
     
-            return $this->redirectToRoute('success');
+            return $this->redirectToRoute('announcement_success');
         }
         
         return $this->render('/announcement/new.html.twig',

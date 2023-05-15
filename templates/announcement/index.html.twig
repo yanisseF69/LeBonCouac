@@ -26,6 +26,7 @@
             <h4 class="card-title">{{announcement.title}}</h4>
             <h6 class="card-subtitle mb-2 text-muted">{{announcement.price}} €</h6>
             <p class="card-text">Crée le {{announcement.createdAt|date('Y/m/d') }} </br>
+            par {{ announcement.user.pseudo }} </br>
             à {{announcement.city}}</p>
             
         </div>

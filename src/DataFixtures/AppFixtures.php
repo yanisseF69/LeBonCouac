@@ -19,7 +19,7 @@ class AppFixtures extends Fixture
 
         for($i = 0; $i < 10; $i++) {
             $user = new User();
-            $user->setPseudo("yaya699")
+            $user->setPseudo("yaya699" . $i)
                 ->setEmail("yanisseferhaoui" . $i . "@gmail.com")
                 ->setFirstName("Yanisse")
                 ->setLastName("Ferhaoui")
@@ -30,12 +30,24 @@ class AppFixtures extends Fixture
             $manager->persist($user);
         }
 
+        $user = new User();
+        $user->setPseudo("yaya")
+            ->setEmail("oueoue@oueoue.com")
+            ->setFirstName("Yanisse")
+            ->setLastName("Ferhaoui")
+            ->setRoles(['ROLE_ADMIN', 'ROLE_USER'])
+            ->setPlainPassword('oueoue');
+            
+
+        $manager->persist($user);
+
         for ($i=0; $i < 30; $i++) { 
             $annonce = new Announcement();
             $annonce->setTitle("Voiture pas cher oueoue")
                     ->setPrice(1500)
                     ->setDescription("Oueoue offre en or venez no noob")
-                    ->setCity("Lyon(69)");
+                    ->setCity("Lyon(69)")
+                    ->setUser($user);
             $manager->persist($annonce);
             
         }

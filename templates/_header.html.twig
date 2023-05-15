@@ -15,6 +15,27 @@
             <span class="visually-hidden">(current)</span>
           </a>
       </ul>
+      <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+          {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+          <a class="nav-link active" href="/profile">{{ app.user.pseudo }}
+          </a>
+          <li class="nav-item">
+          <a class="nav-link active" href="/logout">Se déconnecter
+          <span class="visually-hidden">(current)</span>
+          </a>
+          {% else %}
+          <a class="nav-link active" href="/login">Se connecter
+          <span class="visually-hidden">(current)</span>
+          </a>
+          <li class="nav-item">
+          <a class="nav-link active" href="/registration">S'inscrire
+          <span class="visually-hidden">(current)</span>
+          </a>
+          {% endif %}
+            
+          
+      </ul>
     </div>
   </div>
 </nav>

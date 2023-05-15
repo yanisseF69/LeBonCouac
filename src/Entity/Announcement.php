@@ -36,6 +36,10 @@ class Announcement
     #[ORM\OneToMany(mappedBy: 'announcement', targetEntity: Image::class, orphanRemoval: true, cascade: ['persist'])]
     private Collection $images;
 
+    #[ORM\ManyToOne(inversedBy: 'announcements')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
 
     public function __construct()
     {
@@ -143,6 +147,18 @@ class Announcement
     public function setCreatedAt($createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }
